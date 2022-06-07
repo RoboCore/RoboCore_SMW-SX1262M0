@@ -5,7 +5,7 @@
 * This program uses the ATmega to communicate with the LoRaWAN module.
 * 
 * Copyright 2022 RoboCore.
-* Written by Francois (16/03/2022).
+* Written by Francois (07/06/2022).
 * 
 * 
 * This file is part of the SMW_SX1262M0 library ("SMW_SX1262M0-lib").
@@ -61,6 +61,14 @@ void setup() {
   // reset the module
   lorawan.reset();
 
+  // set join mode to OTAA
+  response = lorawan.set_JoinMode(SMW_SX1262M0_JOIN_MODE_OTAA);
+  if(response == CommandResponse::OK){
+    Serial.println(F("Mode set to OTAA"));
+  } else {
+    Serial.println(F("Error setting the join mode"));
+  }
+
   // read the Device EUI
   char deveui[16];
   response = lorawan.get_DevEUI(deveui);
@@ -90,14 +98,6 @@ void setup() {
     Serial.println(')');
   } else {
     Serial.println(F("Error setting the Application Key"));
-  }
-
-  // set join mode to OTAA
-  response = lorawan.set_JoinMode(SMW_SX1262M0_JOIN_MODE_OTAA);
-  if(response == CommandResponse::OK){
-    Serial.println(F("Mode set to OTAA"));
-  } else {
-    Serial.println(F("Error setting the join mode"));
   }
 
   // save the current configuration (optional)
